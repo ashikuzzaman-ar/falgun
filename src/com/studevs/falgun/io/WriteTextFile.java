@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.studevs.util;
-
-import java.io.Serializable;
+package com.studevs.falgun.io;
 
 /**
  *
  * @author ashik
  */
-public interface DeepCopy extends Serializable{}
+public class WriteTextFile {
+    
+}
