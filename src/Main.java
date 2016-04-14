@@ -1,6 +1,7 @@
 
-import com.studevs.util.DeepCopy;
-import com.studevs.util.ObjectCopy;
+import com.studevs.io.ReadTextFile;
+import java.io.File;
+import java.io.Serializable;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,17 +16,15 @@ public class Main {
 
     public static void main(String[] args) throws CloneNotSupportedException {
 
-        Test t = new Test();
-        t.setA(10);
-        Test t2 = (Test) ObjectCopy.getCopyOf(t);
-        t.setA(15);
-        
-        System.out.println("Value of t: "+t.getA());
-        System.out.println("Value of t2: "+t2.getA());
+        ReadTextFile rtf = new ReadTextFile(new File("").getAbsolutePath()+"/src/Main.java");
+        while(rtf.hasNext()){
+            
+            System.out.println(rtf.readNextLine());
+        }
     }
 }
 //You have to implement DeepCopy Only if you want to make a class cloneable
-class Test implements DeepCopy{
+class Test implements Serializable {
 
     private int a;
 
