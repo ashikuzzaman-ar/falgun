@@ -16,14 +16,22 @@ public class Main {
 
     public static void main(String[] args) throws CloneNotSupportedException {
 
-        ReadTextFile rtf = new ReadTextFile(new File("").getAbsolutePath()+"/src/Main.java");
-        while(rtf.hasNext()){
-            
-            System.out.println(rtf.readNextLine());
+        String[] word = null;
+        ReadTextFile rtf = new ReadTextFile(new File("").getAbsolutePath() + "/src/Main.java");
+        if (rtf.hasNext()) {
+
+            word = rtf.readNextWordTo(10);
+        }
+        
+        rtf.close();
+
+        for (String word1 : word) {
+            System.out.println(word1);
         }
     }
 }
 //You have to implement DeepCopy Only if you want to make a class cloneable
+
 class Test implements Serializable {
 
     private int a;
