@@ -23,12 +23,27 @@ public class ObjectSerialization {
     private ObjectOutputStream objectOutputStream;
     private FileInputStream fileInputStream;
     private ObjectInputStream objectInputStream;
+    private String objectFileName ;
 
     public ObjectSerialization(Object object) {
 
         try {
 
             this.serializedObject = object;
+            this.objectFileName = "object.ser";
+        } catch (Exception e) {
+
+            System.err.println(e.toString());
+        }
+    }
+    
+    
+    public ObjectSerialization(Object object, String objectFileName) {
+
+        this(object);
+        try {
+
+            this.objectFileName = objectFileName;
         } catch (Exception e) {
 
             System.err.println(e.toString());
@@ -45,12 +60,25 @@ public class ObjectSerialization {
             System.err.println(e.toString());
         }
     }
+    
+    
+    public void setObjectToSerialize(Object object, String objectFileName) {
+
+        try {
+
+            this.setObjectToSerialize(object);
+            this.objectFileName = objectFileName;
+        } catch (Exception e) {
+
+            System.err.println(e.toString());
+        }
+    }
 
     public void serialize() {
 
         try {
 
-            this.fileOutputStream = new FileOutputStream("object.ser");
+            this.fileOutputStream = new FileOutputStream(this.objectFileName);
             this.objectOutputStream = new ObjectOutputStream(this.fileOutputStream);
 
             this.objectOutputStream.writeObject(this.serializedObject);
@@ -64,11 +92,11 @@ public class ObjectSerialization {
         }
     }
 
-    public Object getSerializedObject() {
+    public Object getSerializedObject(String objectFileName) {
 
         try {
 
-            this.fileInputStream = new FileInputStream("object.ser");
+            this.fileInputStream = new FileInputStream(objectFileName);
             this.objectInputStream = new ObjectInputStream(fileInputStream);
             this.serializedObject = this.objectInputStream.readObject();
 
