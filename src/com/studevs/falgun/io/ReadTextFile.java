@@ -19,8 +19,8 @@ public class ReadTextFile {
     private Scanner scanner;
     private String filePath;
     private int globalLineCounter;
-    private int initialLineNumber ;
-    private int terminalLineNumber ;
+    private int initialLineNumber;
+    private int terminalLineNumber;
 
     public ReadTextFile(String filePath) {
 
@@ -40,7 +40,7 @@ public class ReadTextFile {
     public void setFilePath(String filePath) {
 
         try {
-            
+
             this.globalLineCounter = 0;
             this.initialLineNumber = 0;
             this.terminalLineNumber = 0;
@@ -83,6 +83,18 @@ public class ReadTextFile {
         try {
 
             return this.scanner.next();
+        } catch (Exception e) {
+
+            System.err.println(e.toString());
+            return null;
+        }
+    }
+
+    public String readNextLine() {
+
+        try {
+
+            return this.scanner.nextLine();
         } catch (Exception e) {
 
             System.err.println(e.toString());
@@ -135,14 +147,57 @@ public class ReadTextFile {
         }
     }
 
-    
-    
-    public String[] readNextWordFrom(int initialLineNumber, int terminalLineNumber) {
+    private String[] readLines() {
 
         try {
-            
-            this.initialLineNumber = initialLineNumber;
-            this.terminalLineNumber = terminalLineNumber;
+
+            if (this.globalLineCounter > this.initialLineNumber) {
+
+                this.reset();
+            }
+
+            List<String> lineList = new ArrayList<>();
+
+            if (this.initialLineNumber <= this.terminalLineNumber) {
+
+                while (this.globalLineCounter < this.initialLineNumber && this.scanner.hasNext()) {
+
+                    this.scanner.nextLine();
+                    this.globalLineCounter++;
+                }
+
+                while (this.globalLineCounter <= this.terminalLineNumber && this.scanner.hasNext()) {
+
+                    lineList.add(this.scanner.nextLine());
+                    this.globalLineCounter++;
+                }
+
+                String[] lines = new String[lineList.size()];
+
+                for (int i = 0; i < lineList.size(); i++) {
+
+                    lines[i] = lineList.get(i);
+                }
+
+                return lines;
+            } else {
+
+                System.err.println("Starting position must be less than or equal to terminal position.");
+                return null;
+            }
+        } catch (Exception e) {
+
+            System.err.println(e.toString());
+            return null;
+        }
+    }
+
+    public String[] readNextWordsFrom(int initialWordNumber, int terminalWordNumber) {
+
+        try {
+
+            this.initialLineNumber = initialWordNumber;
+            this.terminalLineNumber = terminalWordNumber;
             return this.readWords();
         } catch (Exception e) {
 
@@ -150,14 +205,26 @@ public class ReadTextFile {
             return null;
         }
     }
-    
-    
-    
-    public String[] readNextWordFrom(int initialLineNumber) {
+
+    public String[] readNextLinesFrom(int initialLineNumber, int terminalLineNumber) {
 
         try {
-            
+
             this.initialLineNumber = initialLineNumber;
+            this.terminalLineNumber = terminalLineNumber;
+            return this.readLines();
+        } catch (Exception e) {
+
+            System.err.println(e.toString());
+            return null;
+        }
+    }
+
+    public String[] readNextWordsFrom(int initialWordNumber) {
+
+        try {
+
+            this.initialLineNumber = initialWordNumber;
             this.terminalLineNumber = Integer.MAX_VALUE;
             return this.readWords();
         } catch (Exception e) {
@@ -166,15 +233,27 @@ public class ReadTextFile {
             return null;
         }
     }
-    
-    
-    
-    public String[] readNextWordTo(int terminalLineNumber) {
+
+    public String[] readNextLinesFrom(int initialLineNumber) {
 
         try {
-            
+
+            this.initialLineNumber = initialLineNumber;
+            this.terminalLineNumber = Integer.MAX_VALUE;
+            return this.readLines();
+        } catch (Exception e) {
+
+            System.err.println(e.toString());
+            return null;
+        }
+    }
+
+    public String[] readNextWordsTo(int terminalWordNumber) {
+
+        try {
+
             this.initialLineNumber = 0;
-            this.terminalLineNumber = terminalLineNumber;
+            this.terminalLineNumber = terminalWordNumber;
             return this.readWords();
         } catch (Exception e) {
 
@@ -183,17 +262,29 @@ public class ReadTextFile {
         }
     }
 
-    
-    
-    public String readNextLine() {
+    public String[] readNextLinesTo(int terminalLineNumber) {
 
         try {
 
-            return this.scanner.nextLine();
+            this.initialLineNumber = 0;
+            this.terminalLineNumber = terminalLineNumber;
+            return this.readLines();
         } catch (Exception e) {
 
             System.err.println(e.toString());
             return null;
+        }
+    }
+
+    public int getCounter() {
+
+        try {
+
+            return this.globalLineCounter + 1;
+        } catch (Exception e) {
+
+            System.err.println(e.toString());
+            return -1;
         }
     }
 
