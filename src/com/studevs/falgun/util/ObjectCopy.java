@@ -13,20 +13,20 @@ import com.studevs.falgun.io.ObjectSerialization;
  */
 public class ObjectCopy {
 
-    public static Object getCopyOf(Object object){
-        
+    public static Object getCopyOf(Object object) {
+
         try {
-            
-            ObjectSerialization objectSerialization = new ObjectSerialization(object);
+
+            ObjectSerialization objectSerialization = new ObjectSerialization(object, (object.getClass().getName() + ".ser"));
             objectSerialization.serialize();
-            
-            object = objectSerialization.getSerializedObject();
-            
+
+            object = objectSerialization.getSerializedObject(object.getClass().getName() + ".ser");
+
             objectSerialization.removeSerializationFile();
-            
+
             return object;
         } catch (Exception e) {
-            
+
             System.err.println(e.toString());
             return null;
         }
