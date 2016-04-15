@@ -115,7 +115,7 @@ public class ObjectSerialization {
         
         try {
             
-            new File("object.ser").delete();
+            new File(this.objectFileName).delete();
         } catch (Exception e) {
             
             System.err.println(e.toString());
