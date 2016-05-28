@@ -5,7 +5,7 @@
  */
 package com.studevs.falgun.frameworks.persistence;
 
-import java.util.List;
+import java.util.Collection;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -43,15 +43,15 @@ public class Hibernate {
         this.sessionFactory = sessionFactory;
     }
 
-    public Long[] addObjects(Object... insertedObjects) {
+    private Long[] addObjectArray(Object[] insertedObjects) {
 
         try {
 
             if (insertedObjects == null || this.sessionFactory == null) {
-                
+
                 return null;
             } else {
-                
+
                 this.session = this.sessionFactory.openSession();
                 this.transaction = null;
 
@@ -89,45 +89,23 @@ public class Hibernate {
         }
     }
 
-    public Long[] addObjects(List<Object> insertedObjects) {
+    public Long[] addObjectCollection(Collection<Object> insertedObjects) {
 
         try {
 
-            if (insertedObjects == null || this.sessionFactory == null) {
-                
-                return null;
-            } else {
-                
-                this.session = this.sessionFactory.openSession();
-                this.transaction = null;
+            return this.addObjectArray(insertedObjects.toArray());
+        } catch (HibernateException e) {
 
-                Long[] userID = new Long[insertedObjects.size()];
+            System.err.println(e);
+            return null;
+        }
+    }
 
-                try {
+    public Long[] addObjects(Object... insertedObjects) {
 
-                    this.transaction = this.session.beginTransaction();
+        try {
 
-                    for (int i = 0; i < insertedObjects.size(); i++) {
-
-                        userID[i] = (Long) this.session.save(insertedObjects.get(i));
-                    }
-
-                    this.transaction.commit();
-                } catch (Exception e) {
-
-                    if (this.transaction != null) {
-
-                        this.transaction.rollback();
-                    }
-
-                    throw new ExceptionInInitializerError(e);
-                } finally {
-
-                    this.session.close();
-                }
-
-                return userID;
-            }
+            return this.addObjectArray(insertedObjects);
         } catch (HibernateException e) {
 
             System.err.println(e);
