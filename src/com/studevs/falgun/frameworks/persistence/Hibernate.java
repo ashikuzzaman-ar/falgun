@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -189,7 +188,7 @@ public class Hibernate implements Serializable {
                 this.query = null;
 
                 long rowAffected;
-                Set<String> namedParameterMapKeys = namedParameterMap.keySet();
+                String[] namedParameterMapKeys = (String[]) namedParameterMap.keySet().toArray();
 
                 try {
 
@@ -197,11 +196,16 @@ public class Hibernate implements Serializable {
 
                     this.query = this.session.createQuery(HibernateQueryLanguage);
 
-                    namedParameterMapKeys.stream().forEach((key) -> {
+                    for (String namedParameterMapKey : namedParameterMapKeys) {
 
-                        this.query.setParameter(key, namedParameterMap.get(key));
-                    });
+                        this.query.setParameter(namedParameterMapKey, namedParameterMap.get(namedParameterMapKey));
+                    }
 
+//                    Remove lambda expression for supporting lower versions
+//                    namedParameterMapKeys.stream().forEach((key) -> {
+//
+//                        this.query.setParameter(key, namedParameterMap.get(key));
+//                    });
                     rowAffected = (long) this.query.executeUpdate();
 
                     this.transaction.commit();
@@ -257,12 +261,18 @@ public class Hibernate implements Serializable {
 
                     if (namedParameterMap != null) {
 
-                        Set<String> namedParameterMapKeys = namedParameterMap.keySet();
+                        String[] namedParameterMapKeys = (String[]) namedParameterMap.keySet().toArray();
 
-                        namedParameterMapKeys.stream().forEach((key) -> {
+                        for (String namedParameterMapKey : namedParameterMapKeys) {
 
-                            this.query.setParameter(key, namedParameterMap.get(key));
-                        });
+                            this.query.setParameter(namedParameterMapKey, namedParameterMap.get(namedParameterMapKey));
+                        }
+
+//                    Remove lambda expression for supporting lower versions
+//                        namedParameterMapKeys.stream().forEach((key) -> {
+//
+//                            this.query.setParameter(key, namedParameterMap.get(key));
+//                        });
                     }
 
                     if (startPosition != null) {
